@@ -1,4 +1,5 @@
 ﻿using Citacoes.Api.Domain;
+using Citacoes.Api.Domain.Pagination;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +28,14 @@ namespace Citacoes.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery]PaginationParameters pagination)
         {
-            return Ok(context.Citacoes);
+           var citacoes = context.Citacoes.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.SearchQuery))
+                citacoes = citacoes.Where(x => x.Texto.Contains(pagination.SearchQuery) || x.Autor.Contains(pagination.SearchQuery));
+
+            return Ok(PagedList<Citacao>.Create(citacoes, pagination.PageNumber, pagination.PageSize));
         }
 
         /// <summary>
