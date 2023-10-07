@@ -1,4 +1,6 @@
 ﻿using Citacoes.Api.Domain;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -16,10 +18,12 @@ namespace Citacoes.Api.Controllers
     public class CitacoesController : ControllerBase
     {
         private readonly CitacoesDbContext context;
+        private readonly IValidator<Citacao> validator;
 
-        public CitacoesController(CitacoesDbContext context)
+        public CitacoesController(CitacoesDbContext context, IValidator<Citacao> validator)
         {
             this.context = context;
+            this.validator = validator;
         }
 
         [HttpGet]
@@ -40,6 +44,13 @@ namespace Citacoes.Api.Controllers
         [Produces(MediaTypeNames.Application.Json)]
         public IActionResult CreateCitacao(Citacao citacao)
         {
+            //var validationResult = validator.Validate(citacao);
+            //if (!validationResult.IsValid)
+            //{
+            //    validationResult.AddToModelState(this.ModelState);
+            //    return ValidationProblem();
+            //}
+
             context.Set<Citacao>().Add(citacao);
             context.SaveChanges();
 

@@ -1,5 +1,7 @@
 using Citacoes.Api.Domain;
 using Citacoes.Api.Infrastructure;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Reflection;
 
@@ -18,6 +20,11 @@ namespace Citacoes.Api
             #region Modo 2
             //builder.Services.AddControllers();
             //builder.Services.AddTransient<ProblemDetailsFactory, CustomProblemDetailsFactory>();
+            #endregion
+
+            #region Fluent Validator
+            //builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddValidatorsFromAssemblyContaining<Program>();
             #endregion
 
             builder.Configuration.AddUserSecrets<Program>();
