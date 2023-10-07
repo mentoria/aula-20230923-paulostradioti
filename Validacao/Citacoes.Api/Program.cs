@@ -12,12 +12,12 @@ namespace Citacoes.Api
             var builder = WebApplication.CreateBuilder(args);
 
             #region Modo 1
-            //builder.Services.AddControllers().ConfigureApiBehaviorOptions(ApiConfiguration.ApiBehaviorOptions);
+            builder.Services.AddControllers().ConfigureApiBehaviorOptions(ApiConfiguration.ApiBehaviorOptions);
             #endregion
 
             #region Modo 2
-            builder.Services.AddControllers();
-            builder.Services.AddTransient<ProblemDetailsFactory, CustomProblemDetailsFactory>();
+            //builder.Services.AddControllers();
+            //builder.Services.AddTransient<ProblemDetailsFactory, CustomProblemDetailsFactory>();
             #endregion
 
             builder.Configuration.AddUserSecrets<Program>();

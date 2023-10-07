@@ -53,27 +53,28 @@ namespace Citacoes.Api.Controllers
 
             if (tipo == 1)
             {
-                ModelState.AddModelError("Teste", "Teste de Erro");
-                return ValidationProblem(ModelState);
+                ModelState.AddModelError("Teste", "Retorno usando método ValidationProblem");
+                //return ValidationProblem(ModelState);
+                return ValidationProblem();
             }
 
             if (tipo == 2)
             {
-                return Problem();
+                return Problem("Retorno usando método Problem");
             }
 
             if (tipo == 3)
             {
-                return ValidationProblem();
+                return ValidationProblem("Retorno usando método ValidationProblem");
             }
 
             return Ok();
         }
 
-        //public override ActionResult ValidationProblem([ActionResultObjectValue] ModelStateDictionary modelStateDictionary)
-        //{
-        //    var options = HttpContext.RequestServices.GetRequiredService<IOptions<ApiBehaviorOptions>>();
-        //    return (ActionResult)options.Value.InvalidModelStateResponseFactory(ControllerContext);
-        //}
+        public override ActionResult ValidationProblem([ActionResultObjectValue] ModelStateDictionary modelStateDictionary)
+        {
+            var options = HttpContext.RequestServices.GetRequiredService<IOptions<ApiBehaviorOptions>>();
+            return (ActionResult)options.Value.InvalidModelStateResponseFactory(ControllerContext);
+        }
     }
 }
