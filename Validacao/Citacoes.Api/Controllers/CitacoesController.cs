@@ -1,5 +1,8 @@
 ﻿using Citacoes.Api.Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Options;
 using System.Net.Mime;
 
 namespace Citacoes.Api.Controllers
@@ -22,7 +25,6 @@ namespace Citacoes.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-
             return Ok(context.Citacoes);
         }
 
@@ -43,5 +45,35 @@ namespace Citacoes.Api.Controllers
 
             return Created(nameof(Get), citacao);
         }
+
+
+        [HttpGet("problem/{tipo:int}")]
+        public IActionResult GetProblem(int tipo)
+        {
+
+            if (tipo == 1)
+            {
+                ModelState.AddModelError("Teste", "Teste de Erro");
+                return ValidationProblem(ModelState);
+            }
+
+            if (tipo == 2)
+            {
+                return Problem();
+            }
+
+            if (tipo == 3)
+            {
+                return ValidationProblem();
+            }
+
+            return Ok();
+        }
+
+        //public override ActionResult ValidationProblem([ActionResultObjectValue] ModelStateDictionary modelStateDictionary)
+        //{
+        //    var options = HttpContext.RequestServices.GetRequiredService<IOptions<ApiBehaviorOptions>>();
+        //    return (ActionResult)options.Value.InvalidModelStateResponseFactory(ControllerContext);
+        //}
     }
 }
